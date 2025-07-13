@@ -1,0 +1,27 @@
+{
+  "name": "whatsapp-scheduler-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "WhatsApp bot for scheduling and sending automated messages",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "scheduler",
+    "automation",
+    "messaging"
+  ],
+  "dependencies": {
+    "whatsapp-web.js": "^1.21.0",
+    "qrcode-terminal": "^0.12.0",
+    "node-schedule": "^2.1.1",
+    "moment": "^2.29.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
