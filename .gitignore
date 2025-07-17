@@ -1,5 +1,6 @@
 node_modules/
-.wwebjs_cache/
-.wwebjs_auth/
-archived-events.json
-events.json
+
+.env
+auth_info_baileys/
+*.log
+backups/
