@@ -3,4 +3,5 @@ node_modules/
 .env
 auth_info_baileys/
 *.log
-backups/
+src/backups/
+scr/data/
