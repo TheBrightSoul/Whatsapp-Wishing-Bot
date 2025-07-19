@@ -23,6 +23,12 @@ class StatusCommand extends BaseCommand {
     const groupWishes = this.dataService.groupWishes.length;
     const userGroups = Object.keys(this.dataService.userGroups).length;
     const whitelistedUsers = this.dataService.whitelist.length;
+    const rawNumber = config.OWNER_NUMBER; // e.g., "919999999999@s.whatsapp.net"
+
+    // Remove "@s.whatsapp.net" and insert dash after country code
+    const formattedNumber = rawNumber
+      .replace("@s.whatsapp.net", "")
+      .replace(/^(\d{2})(\d{10})$/, "$1$2");
 
     const statusText = `🤖 *Soul Bot Status*
 
@@ -38,8 +44,9 @@ _Statistics:_
 🏷️ User Groups: ${userGroups}
 ✅ Whitelisted Users: ${whitelistedUsers}
 
-_Owner:_ ${config.OWNER * NUMBER}
-\_Command Prefix:* ${config.COMMAND_PREFIX}`;
+_Owner No.:_ +${formattedNumber}
+
+_Command Prefix:_ ${config.COMMAND_PREFIX}`;
 
     await this.sendMessage(senderId, statusText);
   }

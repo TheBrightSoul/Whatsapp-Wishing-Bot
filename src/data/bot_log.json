@@ -1,1 +1,277 @@
-[]
+[
+  {
+    "timestamp": "2025-07-17T09:19:47.488Z",
+    "type": "command_executed",
+    "command": "help",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-17T09:33:38.016Z",
+    "type": "command_executed",
+    "command": "help",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T07:40:21.139Z",
+    "type": "command_executed",
+    "command": "help",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T07:40:21.148Z",
+    "type": "command_executed",
+    "command": "help",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T07:41:25.966Z",
+    "type": "command_error",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "error": "NUMBER is not defined"
+  },
+  {
+    "timestamp": "2025-07-18T07:44:42.752Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T07:45:30.775Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:01:12.823Z",
+    "type": "bot_deactivated",
+    "deactivated_by": "918840264036@s.whatsapp.net"
+  },
+  {
+    "timestamp": "2025-07-18T08:01:12.824Z",
+    "type": "command_executed",
+    "command": "stop",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:01:28.457Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:01:34.322Z",
+    "type": "bot_activated",
+    "activated_by": "918840264036@s.whatsapp.net"
+  },
+  {
+    "timestamp": "2025-07-18T08:01:34.322Z",
+    "type": "command_executed",
+    "command": "start",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:01:45.821Z",
+    "type": "command_executed",
+    "command": "listwishes",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:02:32.452Z",
+    "type": "wish_added",
+    "wish_id": "1752825752447",
+    "created_by": "918840264036@s.whatsapp.net",
+    "recipient": "919235711766@s.whatsapp.net",
+    "scheduled_for": "18/07 13:35"
+  },
+  {
+    "timestamp": "2025-07-18T08:02:32.453Z",
+    "type": "command_executed",
+    "command": "addwish",
+    "user": "918840264036@s.whatsapp.net",
+    "args": [
+      "18/07",
+      "13:35",
+      "919235711766@s.whatsapp.net",
+      "Testing 1"
+    ]
+  },
+  {
+    "timestamp": "2025-07-18T08:03:12.293Z",
+    "type": "command_executed",
+    "command": "listwishes",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:03:31.445Z",
+    "type": "wish_added",
+    "wish_id": "1752825811437",
+    "created_by": "918840264036@s.whatsapp.net",
+    "recipient": "919235711766@s.whatsapp.net",
+    "scheduled_for": "18/07 13:36"
+  },
+  {
+    "timestamp": "2025-07-18T08:03:31.446Z",
+    "type": "command_executed",
+    "command": "addwish",
+    "user": "918840264036@s.whatsapp.net",
+    "args": [
+      "18/07",
+      "13:36",
+      "919235711766@s.whatsapp.net",
+      "Testing 2"
+    ]
+  },
+  {
+    "timestamp": "2025-07-18T08:03:41.364Z",
+    "type": "wish_added",
+    "wish_id": "1752825821355",
+    "created_by": "918840264036@s.whatsapp.net",
+    "recipient": "919235711766@s.whatsapp.net",
+    "scheduled_for": "18/07 13:37"
+  },
+  {
+    "timestamp": "2025-07-18T08:03:41.364Z",
+    "type": "command_executed",
+    "command": "addwish",
+    "user": "918840264036@s.whatsapp.net",
+    "args": [
+      "18/07",
+      "13:37",
+      "919235711766@s.whatsapp.net",
+      "Testing 3"
+    ]
+  },
+  {
+    "timestamp": "2025-07-18T08:03:50.321Z",
+    "type": "command_executed",
+    "command": "listwishes",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:05:00.879Z",
+    "type": "wish_sent",
+    "wish_id": "1752825752447",
+    "recipient": "919235711766@s.whatsapp.net",
+    "message": "Testing 1"
+  },
+  {
+    "timestamp": "2025-07-18T08:06:00.558Z",
+    "type": "wish_sent",
+    "wish_id": "1752825811437",
+    "recipient": "919235711766@s.whatsapp.net",
+    "message": "Testing 2"
+  },
+  {
+    "timestamp": "2025-07-18T08:07:01.200Z",
+    "type": "wish_sent",
+    "wish_id": "1752825821355",
+    "recipient": "919235711766@s.whatsapp.net",
+    "message": "Testing 3"
+  },
+  {
+    "timestamp": "2025-07-18T08:35:35.639Z",
+    "type": "command_executed",
+    "command": "help",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:36:21.830Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:37:25.552Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:40:56.745Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:41:27.980Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:42:16.610Z",
+    "type": "command_executed",
+    "command": "status",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:43:18.220Z",
+    "type": "bot_deactivated",
+    "deactivated_by": "918840264036@s.whatsapp.net"
+  },
+  {
+    "timestamp": "2025-07-18T08:43:18.221Z",
+    "type": "command_executed",
+    "command": "stop",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:43:41.259Z",
+    "type": "wish_added",
+    "wish_id": "1752828221252",
+    "created_by": "918840264036@s.whatsapp.net",
+    "recipient": "919235711766@s.whatsapp.net",
+    "scheduled_for": "18/07 14:15"
+  },
+  {
+    "timestamp": "2025-07-18T08:43:41.259Z",
+    "type": "command_executed",
+    "command": "addwish",
+    "user": "918840264036@s.whatsapp.net",
+    "args": [
+      "18/07",
+      "14:15",
+      "919235711766@s.whatsapp.net",
+      "Testing 4"
+    ]
+  },
+  {
+    "timestamp": "2025-07-18T08:45:48.139Z",
+    "type": "bot_activated",
+    "activated_by": "918840264036@s.whatsapp.net"
+  },
+  {
+    "timestamp": "2025-07-18T08:45:48.139Z",
+    "type": "command_executed",
+    "command": "start",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  },
+  {
+    "timestamp": "2025-07-18T08:46:04.461Z",
+    "type": "command_executed",
+    "command": "listwishes",
+    "user": "918840264036@s.whatsapp.net",
+    "args": []
+  }
+]

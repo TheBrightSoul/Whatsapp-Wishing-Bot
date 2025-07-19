@@ -90,7 +90,16 @@ class DataService {
         backup_date: new Date().toISOString(),
       };
 
-      const backupFileName = `backup_${Date.now()}.json`;
+      // Create readable date string
+      const now = new Date();
+      const formattedDate = now
+        .toISOString()
+        .replace(/T/, "_") // Replace T with underscore
+        .replace(/:/g, "-") // Replace colons with hyphens
+        .replace(/\..+/, ""); // Remove milliseconds and Z
+
+      const backupFileName = `backup_${formattedDate}.json`;
+
       const backupDir = path.join(__dirname, "../backups");
       FileManager.ensureDirectoryExists(backupDir);
 
