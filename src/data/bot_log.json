@@ -273,5 +273,20 @@
     "command": "listwishes",
     "user": "918840264036@s.whatsapp.net",
     "args": []
+  },
+  {
+    "timestamp": "2025-07-19T08:10:20.488Z",
+    "type": "wish_added",
+    "wish_id": "1752912620480",
+    "created_by": "918840264036@s.whatsapp.net",
+    "recipient": "919235711766@s.whatsapp.net",
+    "scheduled_for": "19/07/2025 13:42"
+  },
+  {
+    "timestamp": "2025-07-19T08:12:00.425Z",
+    "type": "wish_sent",
+    "wish_id": "1752912620480",
+    "recipient": "919235711766@s.whatsapp.net",
+    "message": "Testing 1"
   }
 ]

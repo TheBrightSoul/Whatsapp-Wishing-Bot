@@ -1,9 +1,31 @@
 // src/commands/commandManager.js
 const CommandParser = require("./commandParser");
+
+// Import all command implementations
 const HelpCommand = require("./implementations/helpCommand");
 const StatusCommand = require("./implementations/statusCommand");
 
-// Import admin commands
+// Wish Commands
+const {
+  AddWishCommand,
+  DeleteWishCommand,
+  ArchiveWishCommand,
+  ListWishesCommand,
+} = require("./implementations/wishCommands");
+
+// Group Commands
+const {
+  CreateGroupCommand,
+  AddToGroupCommand,
+  RemoveFromGroupCommand,
+  ListGroupsCommand,
+  ListGroupMembersCommand,
+  AddGroupWishCommand,
+  ListGroupWishesCommand,
+  SendGroupWishNowCommand,
+} = require("./implementations/groupCommands");
+
+// Admin Commands
 const {
   StartCommand,
   StopCommand,
@@ -16,36 +38,18 @@ const {
   ArchiveOldWishesCommand,
 } = require("./implementations/adminCommands");
 
-// Import group commands
-const {
-  CreateGroupCommand,
-  AddToGroupCommand,
-  RemoveFromGroupCommand,
-  ListGroupsCommand,
-  ListGroupMembersCommand,
-  AddGroupWishCommand,
-  ListGroupWishesCommand,
-  SendGroupWishNowCommand,
-} = require("./implementations/groupCommands");
-
-// Import wish commands
-const {
-  AddWishCommand,
-  DeleteWishCommand,
-  ArchiveWishCommand,
-  ListWishesCommand,
-} = require("./implementations/wishCommands");
-
 class CommandManager {
   constructor(dataService, messageService) {
     this.dataService = dataService;
     this.messageService = messageService;
+    this.commandParser = new CommandParser();
     this.commands = new Map();
+
     this.registerCommands();
   }
 
   registerCommands() {
-    // Basic commands
+    // General Commands
     this.commands.set(
       "help",
       new HelpCommand(this.dataService, this.messageService)
@@ -55,7 +59,61 @@ class CommandManager {
       new StatusCommand(this.dataService, this.messageService)
     );
 
-    // Admin commands
+    // Wish Management Commands
+    this.commands.set(
+      "addwish",
+      new AddWishCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "deletewish",
+      new DeleteWishCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "archivewish",
+      new ArchiveWishCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "listwishes",
+      new ListWishesCommand(this.dataService, this.messageService)
+    );
+
+    // Group Management Commands
+    this.commands.set(
+      "creategroup",
+      new CreateGroupCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "addtogroup",
+      new AddToGroupCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "removefromgroup",
+      new RemoveFromGroupCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "listgroups",
+      new ListGroupsCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "listgroupmembers",
+      new ListGroupMembersCommand(this.dataService, this.messageService)
+    );
+
+    // Group Wish Commands
+    this.commands.set(
+      "addgroupwish",
+      new AddGroupWishCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "listgroupwishes",
+      new ListGroupWishesCommand(this.dataService, this.messageService)
+    );
+    this.commands.set(
+      "sendgroupwishnow",
+      new SendGroupWishNowCommand(this.dataService, this.messageService)
+    );
+
+    // Admin/Owner Commands
     this.commands.set(
       "start",
       new StartCommand(this.dataService, this.messageService)
@@ -92,171 +150,64 @@ class CommandManager {
       "archiveoldwishes",
       new ArchiveOldWishesCommand(this.dataService, this.messageService)
     );
-
-    // Group commands
-    this.commands.set(
-      "creategroup",
-      new CreateGroupCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "addtogroup",
-      new AddToGroupCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "removefromgroup",
-      new RemoveFromGroupCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "listgroups",
-      new ListGroupsCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "listgroupmembers",
-      new ListGroupMembersCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "addgroupwish",
-      new AddGroupWishCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "listgroupwishes",
-      new ListGroupWishesCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "sendgroupwishnow",
-      new SendGroupWishNowCommand(this.dataService, this.messageService)
-    );
-
-    // Wish commands
-    this.commands.set(
-      "addwish",
-      new AddWishCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "deletewish",
-      new DeleteWishCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "archivewish",
-      new ArchiveWishCommand(this.dataService, this.messageService)
-    );
-    this.commands.set(
-      "listwishes",
-      new ListWishesCommand(this.dataService, this.messageService)
-    );
   }
 
   async processMessage(message) {
-    const messageText =
-      message.message.conversation ||
-      message.message.extendedTextMessage?.text ||
-      "";
+    try {
+      const senderId = message.key.remoteJid;
 
-    const parsedCommand = CommandParser.parseCommand(messageText);
-
-    if (!parsedCommand) {
-      return;
-    }
-
-    const senderId = message.key.remoteJid;
-    const { command, args } = parsedCommand;
-
-    // Check if bot is active (except for owner commands)
-    if (!this.dataService.botConfig.active && !this.isOwner(senderId)) {
-      // Allow start command even when bot is inactive
-      if (command !== "start") {
-        return;
+      // Check if bot is active (except for owner)
+      if (!this.dataService.botConfig.active && !this.isOwner(senderId)) {
+        return; // Silently ignore messages when bot is inactive
       }
-    }
 
-    // Check if user is whitelisted (except for owner)
-    if (
-      !this.dataService.whitelist.includes(senderId) &&
-      !this.isOwner(senderId)
-    ) {
-      if (require("../config/config").DEBUG_MODE) {
-        console.log("Message from non-whitelisted user:", senderId);
-      }
-      return;
-    }
+      const messageText = this.extractMessageText(message);
+      if (!messageText) return;
 
-    const commandHandler = this.commands.get(command);
+      const parsedCommand = this.commandParser.parse(messageText);
+      if (!parsedCommand) return;
 
-    if (commandHandler) {
-      try {
-        await commandHandler.execute(message, args);
-
-        // Log activity for successful command execution
-        this.dataService.logActivity({
-          type: "command_executed",
-          command: command,
-          user: senderId,
-          args: args,
-          timestamp: new Date().toISOString(),
-        });
-      } catch (error) {
-        console.error(`Error executing command "${command}":`, error);
-
-        // Log error activity
-        this.dataService.logActivity({
-          type: "command_error",
-          command: command,
-          user: senderId,
-          error: error.message,
-          timestamp: new Date().toISOString(),
-        });
-
+      const command = this.commands.get(parsedCommand.command);
+      if (!command) {
         await this.messageService.sendMessage(
           senderId,
-          "❌ Error processing command. Please try again."
+          `❌ Unknown command: ${parsedCommand.command}\n\nType "help" for available commands.`
         );
+        return;
       }
-    } else {
-      await this.messageService.sendMessage(
-        senderId,
-        `❌ Unknown command: ${command}\nUse ${
-          require("../config/config").COMMAND_PREFIX
-        }help for available commands.`
-      );
+
+      // Update last activity
+      this.dataService.botConfig.lastActivity = new Date().toISOString();
+      this.dataService.saveBotConfig();
+
+      // Execute command
+      await command.execute(message, parsedCommand.args);
+    } catch (error) {
+      console.error("Error processing message:", error);
+
+      // Send error message to user
+      try {
+        await this.messageService.sendMessage(
+          message.key.remoteJid,
+          "❌ An error occurred while processing your command. Please try again."
+        );
+      } catch (sendError) {
+        console.error("Error sending error message:", sendError);
+      }
     }
   }
 
-  isOwner(senderId) {
-    return senderId === require("../config/config").OWNER_NUMBER;
+  extractMessageText(message) {
+    return (
+      message.message?.conversation ||
+      message.message?.extendedTextMessage?.text ||
+      ""
+    ).trim();
   }
 
-  // Helper method to get all registered commands
-  getRegisteredCommands() {
-    return Array.from(this.commands.keys());
-  }
-
-  // Helper method to get command categories
-  getCommandCategories() {
-    return {
-      basic: ["help", "status"],
-      admin: [
-        "start",
-        "stop",
-        "whitelist",
-        "removewhitelist",
-        "listwhitelist",
-        "backup",
-        "restore",
-        "clearlogs",
-        "archiveoldwishes",
-      ],
-      group: [
-        "creategroup",
-        "addtogroup",
-        "removefromgroup",
-        "listgroups",
-        "listgroupmembers",
-        "addgroupwish",
-        "listgroupwishes",
-        "sendgroupwishnow",
-      ],
-      wish: ["addwish", "deletewish", "archivewish", "listwishes"],
-    };
+  isOwner(jid) {
+    const config = require("../config/config");
+    return jid === config.OWNER_NUMBER;
   }
 }
 

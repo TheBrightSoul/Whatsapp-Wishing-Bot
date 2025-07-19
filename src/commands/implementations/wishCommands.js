@@ -21,7 +21,12 @@ class AddWishCommand extends BaseCommand {
     if (args.length < 4) {
       await this.sendMessage(
         senderId,
-        '❌ Usage: addwish [date] [time] [jid] [message]\nExample: addwish 25/12 09:00 1234567890@s.whatsapp.net "Merry Christmas! 🎄"'
+        `❌ *Usage:* addwish [date] [time] [jid] [message]
+
+*Example:* addwish 25/12/2025 09:00 1234567890@s.whatsapp.net "Merry Christmas! 🎄"
+
+*Date Format:* DD/MM/YYYY (e.g., 25/12/2025)
+*Time Format:* HH:MM (e.g., 09:00)`
       );
       return;
     }
@@ -33,7 +38,7 @@ class AddWishCommand extends BaseCommand {
     if (!validateDateFormat(date)) {
       await this.sendMessage(
         senderId,
-        "❌ Invalid date format. Use DD/MM format (e.g., 25/12)"
+        "❌ Invalid date format. Use DD/MM/YYYY format (e.g., 25/12/2025)"
       );
       return;
     }
@@ -69,7 +74,13 @@ class AddWishCommand extends BaseCommand {
     if (this.dataService.saveWishes()) {
       await this.sendMessage(
         senderId,
-        `✅ Wish scheduled successfully!\n\n📅 Date: ${date}\n⏰ Time: ${time}\n👤 Recipient: ${formattedJID}\n💬 Message: "${wishMessage}"\n🆔 ID: ${wish.id}`
+        `✅ *Wish scheduled successfully!*
+
+📅 *Date:* ${date}
+⏰ *Time:* ${time}
+👤 *Recipient:* ${formattedJID}
+💬 *Message:* "${wishMessage}"
+🆔 *ID:* ${wish.id}`
       );
 
       this.dataService.logActivity({
@@ -103,7 +114,9 @@ class DeleteWishCommand extends BaseCommand {
     if (args.length < 1) {
       await this.sendMessage(
         senderId,
-        "❌ Usage: deletewish [id]\nExample: deletewish 1234567890"
+        `❌ *Usage:* deletewish [id]
+
+*Example:* deletewish 1234567890`
       );
       return;
     }
@@ -137,7 +150,12 @@ class DeleteWishCommand extends BaseCommand {
     if (this.dataService.saveWishes()) {
       await this.sendMessage(
         senderId,
-        `✅ Wish deleted successfully!\n\n🆔 ID: ${wishId}\n📅 Was scheduled for: ${wish.date} ${wish.time}\n👤 Recipient: ${wish.jid}`
+        `✅ *Wish deleted successfully!*
+
+🆔 *ID:* ${wishId}
+📅 *Was scheduled for:* ${wish.date} ${wish.time}
+👤 *Recipient:* ${wish.jid}
+💬 *Message:* "${wish.message}"`
       );
 
       this.dataService.logActivity({
@@ -169,7 +187,9 @@ class ArchiveWishCommand extends BaseCommand {
     if (args.length < 1) {
       await this.sendMessage(
         senderId,
-        "❌ Usage: archivewish [id]\nExample: archivewish 1234567890"
+        `❌ *Usage:* archivewish [id]
+
+*Example:* archivewish 1234567890`
       );
       return;
     }
@@ -208,7 +228,12 @@ class ArchiveWishCommand extends BaseCommand {
     if (this.dataService.saveWishes()) {
       await this.sendMessage(
         senderId,
-        `✅ Wish archived successfully!\n\n🆔 ID: ${wishId}\n📅 Was scheduled for: ${wish.date} ${wish.time}\n👤 Recipient: ${wish.jid}`
+        `✅ *Wish archived successfully!*
+
+🆔 *ID:* ${wishId}
+📅 *Was scheduled for:* ${wish.date} ${wish.time}
+👤 *Recipient:* ${wish.jid}
+💬 *Message:* "${wish.message}"`
       );
 
       this.dataService.logActivity({
@@ -253,8 +278,11 @@ class ListWishesCommand extends BaseCommand {
 
     // Sort wishes by date and time
     userWishes.sort((a, b) => {
-      const dateA = new Date(`2024/${a.date} ${a.time}`);
-      const dateB = new Date(`2024/${b.date} ${b.time}`);
+      const [dayA, monthA, yearA] = a.date.split("/");
+      const [dayB, monthB, yearB] = b.date.split("/");
+
+      const dateA = new Date(`${yearA}-${monthA}-${dayA}T${a.time}`);
+      const dateB = new Date(`${yearB}-${monthB}-${dayB}T${b.time}`);
       return dateA - dateB;
     });
 
@@ -262,8 +290,10 @@ class ListWishesCommand extends BaseCommand {
 
     for (const wish of userWishes) {
       const createdDate = new Date(wish.created_at).toLocaleDateString();
+      const [d, m, y] = wish.date.split("/");
+      const displayDate = new Date(`${y}-${m}-${d}`).toDateString(); // e.g., "Thu Dec 25 2025"
       wishList += `🆔 *ID:* ${wish.id}\n`;
-      wishList += `📅 *Date:* ${wish.date}\n`;
+      wishList += `📅 *Date:* ${displayDate}\n`;
       wishList += `⏰ *Time:* ${wish.time}\n`;
       wishList += `👤 *Recipient:* ${wish.jid}\n`;
       wishList += `💬 *Message:* "${wish.message}"\n`;
@@ -276,40 +306,8 @@ class ListWishesCommand extends BaseCommand {
       wishList += `\n`;
     }
 
-    // Split message if too long
-    if (wishList.length > 4000) {
-      const chunks = this.splitMessage(wishList, 4000);
-      for (let i = 0; i < chunks.length; i++) {
-        await this.sendMessage(senderId, chunks[i]);
-        if (i < chunks.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
-        }
-      }
-    } else {
-      await this.sendMessage(senderId, wishList);
-    }
-  }
-
-  splitMessage(text, maxLength) {
-    const chunks = [];
-    let currentChunk = "";
-    const lines = text.split("\n");
-
-    for (const line of lines) {
-      if (currentChunk.length + line.length + 1 > maxLength) {
-        if (currentChunk) {
-          chunks.push(currentChunk);
-          currentChunk = "";
-        }
-      }
-      currentChunk += (currentChunk ? "\n" : "") + line;
-    }
-
-    if (currentChunk) {
-      chunks.push(currentChunk);
-    }
-
-    return chunks;
+    // Send message, splitting if too long
+    await this.sendLongMessage(senderId, wishList);
   }
 }
 

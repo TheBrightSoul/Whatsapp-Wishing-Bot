@@ -2,47 +2,65 @@
 const config = require("../config/config");
 
 class CommandParser {
-  static parseCommand(messageText) {
+  parse(messageText) {
+    // Check if message starts with command prefix
     if (!messageText.startsWith(config.COMMAND_PREFIX)) {
       return null;
     }
 
-    const commandText = messageText
-      .substring(config.COMMAND_PREFIX.length)
-      .trim();
+    // Remove prefix and trim
+    const commandText = messageText.slice(config.COMMAND_PREFIX.length).trim();
+    if (!commandText) {
+      return null;
+    }
+
+    // Split into command and args, handling quoted strings
+    const args = this.parseArgs(commandText);
+    const command = args.shift().toLowerCase();
+
+    return {
+      command,
+      args,
+      originalText: messageText,
+    };
+  }
+
+  parseArgs(text) {
     const args = [];
     let currentArg = "";
     let inQuotes = false;
     let quoteChar = "";
 
-    for (let i = 0; i < commandText.length; i++) {
-      const char = commandText[i];
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const nextChar = text[i + 1];
 
       if ((char === '"' || char === "'") && !inQuotes) {
+        // Start of quoted string
         inQuotes = true;
         quoteChar = char;
       } else if (char === quoteChar && inQuotes) {
+        // End of quoted string
         inQuotes = false;
         quoteChar = "";
       } else if (char === " " && !inQuotes) {
-        if (currentArg.trim()) {
-          args.push(currentArg.trim());
+        // Space outside quotes - end of argument
+        if (currentArg.length > 0) {
+          args.push(currentArg);
           currentArg = "";
         }
       } else {
+        // Regular character
         currentArg += char;
       }
     }
 
-    if (currentArg.trim()) {
-      args.push(currentArg.trim());
+    // Add final argument if any
+    if (currentArg.length > 0) {
+      args.push(currentArg);
     }
 
-    return {
-      command: args[0]?.toLowerCase(),
-      args: args.slice(1),
-      raw: commandText,
-    };
+    return args;
   }
 }
 
