@@ -8,6 +8,9 @@ module.exports = {
   COMMAND_PREFIX: process.env.COMMAND_PREFIX || "Soul,",
   DEBUG_MODE: process.env.DEBUG_MODE === "true",
 
+  // Logging configuration
+  LOGGING_MODE: process.env.LOGGING_MODE || "file", // "file", "console", "disabled"
+
   // File paths
   WISHES_FILE: path.join(__dirname, "../data/wishes.json"),
   GROUP_WISHES_FILE: path.join(__dirname, "../data/group_wishes.json"),
